@@ -1,6 +1,7 @@
 package com.nelioalves.workshopmongo.service;
 
 import com.nelioalves.workshopmongo.domain.User;
+import com.nelioalves.workshopmongo.dto.UserDTO;
 import com.nelioalves.workshopmongo.repository.UserRepository;
 import com.nelioalves.workshopmongo.service.exception.ObjectNotFoundException;
 import java.util.Optional;
@@ -22,5 +23,13 @@ public class UserService {
     public User findById(String id) throws ObjectNotFoundException {
 	Optional<User> obj = repo.findById(id);
 	return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+    }
+
+    public User insert(User user){
+        return repo.save(user);
+    }
+
+    public User fromDTO(UserDTO userDTO){
+        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
     }
 }
