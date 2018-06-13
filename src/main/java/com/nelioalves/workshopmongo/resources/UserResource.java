@@ -21,7 +21,7 @@ public class UserResource {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll(){
+    public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok(userService.findAll().stream().map(UserDTO::new).collect(Collectors.toList()));
     }
 
@@ -31,11 +31,19 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO){
+    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
         User user = userService.fromDTO(userDTO);
         userService.insert(user);
-	    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@RequestBody UserDTO userDTO, @PathVariable("id") String id) throws ObjectNotFoundException {
+        User obj = userService.fromDTO(userDTO);
+        obj.setId(id);
+        userService.update(obj);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{id}")
