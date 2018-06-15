@@ -20,7 +20,7 @@ public class PostService {
 
     public List<Post> findByTitle(String title) throws ObjectNotFoundException {
 
-        List<Post> posts = this.repo.findByTitleContaining(title);
+        List<Post> posts = this.repo.findByTitleContainingIgnoreCase(title);
 
         if(posts.isEmpty()) {
             throw new ObjectNotFoundException("Objeto não encontrado");
