@@ -3,6 +3,7 @@ package com.nelioalves.workshopmongo.service;
 import com.nelioalves.workshopmongo.domain.Post;
 import com.nelioalves.workshopmongo.repository.PostRepository;
 import com.nelioalves.workshopmongo.service.exception.ObjectNotFoundException;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,18 @@ public class PostService {
         }
 
         return posts;
+    }
+
+    public List<Post> fullSearch(String text, Date minDate, Date maxDate) throws ObjectNotFoundException {
+
+	maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000);
+	List<Post> posts = this.repo.fullSearch(text, minDate, maxDate);
+
+	if(posts.isEmpty()) {
+	    throw new ObjectNotFoundException("Objeto não encontrado");
+	}
+
+	return posts;
     }
 
 }
